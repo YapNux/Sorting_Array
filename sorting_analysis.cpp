@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    struct SortStats {
+        int comparisons;
+        int assignments;
+        int swaps;
+    } stats = {0, 0, 0};
+
+    int arr[10];
+    int i, j, temp, step = 1;
+    
+
+    srand(time(NULL));
+    stats.assignments++; 
+
+    for (i = 0; i < 10; i++) {
+        arr[i] = (rand() % 100) + 1;
+        stats.assignments++; 
+    }
+
+    printf("=== CUSTOM SORTING ANALYSIS ===\n\n");
+    
+    printf("Initial Array: [ ");
+    for (i = 0; i < 10; i++) printf("%d ", arr[i]);
+    printf("]\n\n");
+
+    printf("--- SORTING PROGRESS ---\n\n");
+
+    stats.assignments += 2; 
+    for (i = 0; i < 9; i++) {
+        stats.assignments++;
+        stats.comparisons++;
+
+        for (j = 0; j < 10 - i - 1; j++) {
+            stats.assignments++;
+            stats.comparisons++; 
+
+            stats.comparisons++;
+            if (arr[j] > arr[j + 1]) {
+                printf("Step %d: Comparing %d and %d, need to rearrange...\n", step++, arr[j], arr[j+1]);
+                
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                
+                stats.swaps++;
+                stats.assignments += 3;
+            } else {
+                printf("Step %d: Comparing %d and %d, order is correct\n", step++, arr[j], arr[j+1]);
+            }
+
+            printf("Current: [ ");
+            for (int k = 0; k < 10; k++) printf("%d ", arr[k]);
+            printf("]\n\n");
+        }
+    }
+
+    printf("Final Sorted Array: [ ");
+    for (i = 0; i < 10; i++) printf("%d ", arr[i]);
+    printf("]\n\n");
+
+    printf("=== OPERATION STATISTICS ===\n");
+    printf("Comparisons:      %d\n", stats.comparisons);
+    printf("Assignments:      %d\n", stats.assignments);
+    printf("Swaps:            %d\n", stats.swaps);
+    printf("Total Operations: %d\n", (stats.comparisons + stats.assignments + stats.swaps));
+
+    return 0;
+}
